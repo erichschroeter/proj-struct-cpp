@@ -13,22 +13,34 @@ void Command::Execute()
 std::string Command::To_String() const
 {
     std::stringstream ss;
-    bool is_first_arg = true;
 
     for ( auto & arg : args )
     {
-        if ( is_first_arg )
-        {
-            is_first_arg = false;
-            ss << arg;
-        }
-        else
-        {
-            ss << ' ' << arg;
-        }
+        ss << ' ' << arg;
     }
 
     return ss.str();
+}
+
+Mkdir_Command::Mkdir_Command()
+{
+    args.push_back( "mkdir" );
+    args.push_back( "-p" );
+}
+
+void Mkdir_Command::Execute()
+{
+    system( To_String().c_str() );
+}
+
+Touch_Command::Touch_Command()
+{
+    args.push_back( "touch" );
+}
+
+void Touch_Command::Execute()
+{
+    system( To_String().c_str() );
 }
 
 std::ostream & projstruct::operator<<( std::ostream & os, const Command & cmd )
@@ -57,9 +69,9 @@ void projstruct::Strip_Absolute_Path_Prefix( std::string & path )
     }
 }
 
-std::vector< Command > projstruct::Parse( std::string config_string )
+std::vector< Command * > projstruct::Parse( std::string config_string )
 {
-    std::vector< Command > commands;
+    std::vector< Command * > commands;
     std::stringstream ss( config_string );
     std::string line;
 
@@ -69,9 +81,18 @@ std::vector< Command > projstruct::Parse( std::string config_string )
         {
             if ( !line.empty() )
             {
-                Command cmd;
-                cmd.args.push_back( line );
-                commands.push_back( cmd );
+                if ( Is_Dir( line ) )
+                {
+                    Mkdir_Command * cmd = new Mkdir_Command();
+                    cmd->args.push_back( line );
+                    commands.push_back( cmd );
+                }
+                else
+                {
+                    Touch_Command * cmd = new Touch_Command();
+                    cmd->args.push_back( line );
+                    commands.push_back( cmd );
+                }
             }
         }
     }

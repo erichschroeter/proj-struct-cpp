@@ -43,20 +43,20 @@ int main( int argc, char ** argv )
     {
       std::stringstream buf;
       buf << ifs.rdbuf();
-      std::vector< projstruct::Command > commands = projstruct::Parse( buf.str() );
+      std::vector< projstruct::Command * > commands = projstruct::Parse( buf.str() );
 
       if ( args[ "--pretend" ] )
       {
           for ( auto & cmd : commands )
           {
-              std::cout << "would have executed: \"" << cmd << "\"" << std::endl;
+              std::cout << "would have executed: \"" << (*cmd) << "\"" << std::endl;
           }
       }
       else
       {
           for ( auto & cmd : commands )
           {
-              cmd.Execute();
+              cmd->Execute();
           }
       }
     }

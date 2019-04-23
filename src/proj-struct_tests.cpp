@@ -37,17 +37,16 @@ SCENARIO( "Parsing empty lines between two non-empty lines is ignored", "[proj-s
 
     GIVEN( "Parse is passed the following input:\n" << config )
     {
-        std::vector< Command > commands = Parse( config );
+        std::vector< Command * > commands = Parse( config );
 
         THEN( "Only 2 entries exist" )
         {
             REQUIRE( commands.size() == 2 );
-            AND_THEN( "The first entry is \"/a/valid/directory/before/empty/line/\"" )
+            AND_THEN( "Both entries are non-empty" )
             {
-                REQUIRE( commands[ 0 ].To_String() == "/a/valid/directory/before/empty/line/" );
-                AND_THEN( "The second entry is \"/a/valid/directory/after/empty/line/\"" )
+                for ( auto & cmd : commands )
                 {
-                    REQUIRE( commands[ 1 ].To_String() == "/a/valid/directory/after/empty/line/" );
+                    REQUIRE_FALSE( (*cmd).To_String().empty() );
                 }
             }
         }
