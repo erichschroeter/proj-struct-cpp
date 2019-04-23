@@ -46,6 +46,17 @@ bool projstruct::Is_Dir( std::string path )
     return false;
 }
 
+void projstruct::Strip_Absolute_Path_Prefix( std::string & path )
+{
+    if ( !path.empty() )
+    {
+        if ( path[0] == '/' )
+        {
+            path.erase( 0, 1 );
+        }
+    }
+}
+
 std::vector< Command > projstruct::Parse( std::string config_string )
 {
     std::vector< Command > commands;

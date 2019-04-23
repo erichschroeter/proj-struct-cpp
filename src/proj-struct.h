@@ -16,6 +16,7 @@ namespace projstruct
 
     std::ostream & operator<<( std::ostream & os, const Command & cmd );
 
+    void Strip_Absolute_Path_Prefix( std::string & path );
     bool Is_Dir( std::string path );
     std::vector< Command > Parse( std::string config_string );
 }
