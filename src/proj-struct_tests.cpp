@@ -52,3 +52,18 @@ SCENARIO( "Parsing empty lines between two non-empty lines is ignored", "[proj-s
         }
     }
 }
+
+SCENARIO( "Parsing absolute folder paths are converted to relative paths", "[proj-struct_tests.cpp]" )
+{
+    const std::string config = "/an/absolute/directory/";
+
+    GIVEN( "Parse is passed the following input:\n" << config )
+    {
+        std::vector< Command * > commands = Parse( config );
+
+        THEN( "The folder argument is \"an/absolute/directory/\"" )
+        {
+            REQUIRE( commands[ 0 ]->args[ 2 ] == "an/absolute/directory/" );
+        }
+    }
+}
