@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 #include <docopt/docopt.h>
 
@@ -34,26 +36,33 @@ int main( int argc, char ** argv )
         "v1.0"
     );
 
-    std::vector< projstruct::Command > commands = projstruct::Parse(
-        R"(/some/root/path/folder/
-some/relative/path/folder/
-a.txt
-a/path/folder/with/file/b.txt)"
-    );
+    std::ifstream ifs;
+    ifs.open( args[ "<input-file>" ].asString() );
 
-    if ( args[ "--pretend" ] )
+    if ( ifs.is_open() )
     {
-        for ( auto & cmd : commands )
-        {
-            std::cout << "would have executed: \"" << cmd << "\"" << std::endl;
-        }
+      std::stringstream buf;
+      buf << ifs.rdbuf();
+      std::vector< projstruct::Command > commands = projstruct::Parse( buf.str() );
+
+      if ( args[ "--pretend" ] )
+      {
+          for ( auto & cmd : commands )
+          {
+              std::cout << "would have executed: \"" << cmd << "\"" << std::endl;
+          }
+      }
+      else
+      {
+          for ( auto & cmd : commands )
+          {
+              cmd.Execute();
+          }
+      }
     }
     else
     {
-        for ( auto & cmd : commands )
-        {
-            cmd.Execute();
-        }
+      std::cerr << args[ "<input-file>" ].asString() << ": " << strerror( errno ) << std::endl;
     }
 
     return 0;
