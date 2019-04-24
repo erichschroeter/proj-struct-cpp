@@ -11,6 +11,8 @@ add_library(proj-struct-lib
     src/proj-struct.cpp
     $<$<PLATFORM_ID:Windows>:
         src/platform_win.cpp>
+    $<$<PLATFORM_ID:Linux>:
+        src/platform_unix.cpp>
 )
 
 add_executable(proj-struct
