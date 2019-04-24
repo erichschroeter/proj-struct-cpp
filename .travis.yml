@@ -1,0 +1,22 @@
+language: cpp
+
+install: cmake
+
+os:
+  - windows
+
+compiler:
+  - gcc
+  - clang
+
+before_script:
+  # Create a build directory (out of source).
+  - cmake -E make_directory build
+  # Generate project files.
+  - cmake -E chdir build cmake ..
+
+script:
+  # Build the out of source project files.
+  - cmake --build build
+  # Run regression tests via ctest.
+  - cmake -E chdir build ctest -C Debug
