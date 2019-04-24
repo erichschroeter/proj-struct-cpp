@@ -67,3 +67,29 @@ SCENARIO( "Parsing absolute folder paths are converted to relative paths", "[pro
         }
     }
 }
+
+SCENARIO( "Parsing ignores prefixed whitespace", "[proj-struct_tests.cpp]" )
+{
+    const std::string config_prefixed_with_spaces = " /an/absolute/directory/";
+    const std::string config_prefixed_with_tabs = "\t/an/absolute/directory/";
+
+    GIVEN( "Parse is passed the following input:\n" << config_prefixed_with_spaces )
+    {
+        std::vector< Command * > commands = Parse( config_prefixed_with_spaces );
+
+        THEN( "The folder argument is \"an/absolute/directory/\"" )
+        {
+            REQUIRE( commands[ 0 ]->args[ 2 ] == "an/absolute/directory/" );
+        }
+    }
+
+    GIVEN( "Parse is passed the following input:\n" << config_prefixed_with_tabs )
+    {
+        std::vector< Command * > commands = Parse( config_prefixed_with_tabs );
+
+        THEN( "The folder argument is \"an/absolute/directory/\"" )
+        {
+            REQUIRE( commands[ 0 ]->args[ 2 ] == "an/absolute/directory/" );
+        }
+    }
+}

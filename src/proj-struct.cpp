@@ -98,7 +98,7 @@ std::vector< Command * > projstruct::Parse( std::string config_string )
         {
             if ( !line.empty() )
             {
-                Strip_Absolute_Path_Prefix( line );
+                Strip_Absolute_Path_Prefix( Trim( line ) );
 
                 if ( Is_Dir( line ) )
                 {
