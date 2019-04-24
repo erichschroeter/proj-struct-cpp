@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <fstream>
 #include <sstream>
 
 #include "proj-struct.h"
@@ -40,7 +41,10 @@ Touch_Command::Touch_Command()
 
 void Touch_Command::Execute()
 {
-    system( To_String().c_str() );
+    if ( args.size() > 1 )
+    {
+        std::ofstream ofs( args[ 1 ] );
+    }
 }
 
 std::ostream & projstruct::operator<<( std::ostream & os, const Command & cmd )
