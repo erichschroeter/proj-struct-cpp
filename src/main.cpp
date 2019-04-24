@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <string.h>
+#include <errno.h>
 
 #include <docopt/docopt.h>
 
