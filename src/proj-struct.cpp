@@ -129,6 +129,15 @@ std::vector< Command * > projstruct::Parse( std::string config_string )
                 }
                 else
                 {
+                    std::string path_only = Get_Path( line );
+
+                    if ( !path_only.empty() )
+                    {
+                        Mkdir_Command * cmd = new Mkdir_Command();
+                        cmd->args.push_back( path_only );
+                        commands.push_back( cmd );
+                    }
+
                     Touch_Command * cmd = new Touch_Command();
                     cmd->args.push_back( line );
                     commands.push_back( cmd );
