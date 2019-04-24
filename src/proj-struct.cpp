@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "proj-struct.h"
+#include "platform.h"
 
 using namespace projstruct;
 
@@ -31,7 +32,10 @@ Mkdir_Command::Mkdir_Command()
 
 void Mkdir_Command::Execute()
 {
-    system( To_String().c_str() );
+    if ( args.size() > 2 )
+    {
+        Mkdir_p( args[ 2 ] );
+    }
 }
 
 Touch_Command::Touch_Command()
