@@ -2,8 +2,33 @@ language: cpp
 
 install: cmake
 
-os:
-  - windows
+os: windows
+
+matrix:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.6
+          packages:
+            - clang-3.6
+      env:
+        - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
+
+before_install:
+    - eval "${MATRIX_EVAL}"
 
 compiler:
   - gcc
@@ -19,4 +44,5 @@ script:
   # Build the out of source project files.
   - cmake --build build
   # Run regression tests via ctest.
-  - cmake -E chdir build ctest -C Debug
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then cmake -E chdir build ctest -C Debug; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake -E chdir build ctest; fi
