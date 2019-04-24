@@ -58,6 +58,19 @@ bool projstruct::Is_Dir( std::string path )
     return false;
 }
 
+std::string projstruct::Get_Path( const std::string & path )
+{
+    const char separator = '/';
+    size_t index = path.rfind( separator, path.length() );
+
+    if ( index != std::string::npos )
+    {
+        return path.substr( 0, index );
+    }
+
+    return "";
+}
+
 void projstruct::Strip_Absolute_Path_Prefix( std::string & path )
 {
     if ( !path.empty() )

@@ -32,6 +32,7 @@ namespace projstruct
 
     void Strip_Absolute_Path_Prefix( std::string & path );
     bool Is_Dir( std::string path );
+    std::string Get_Path( const std::string & path );
     std::vector< Command * > Parse( std::string config_string );
 }
 
