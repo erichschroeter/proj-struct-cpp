@@ -45,7 +45,7 @@ int main( int argc, char ** argv )
       buf << ifs.rdbuf();
       std::vector< projstruct::Command * > commands = projstruct::Parse( buf.str() );
 
-      if ( args[ "--pretend" ] )
+      if ( args[ "--pretend" ].asBool() )
       {
           for ( auto & cmd : commands )
           {
