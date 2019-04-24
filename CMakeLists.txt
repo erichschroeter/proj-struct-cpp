@@ -14,6 +14,10 @@ add_library(proj-struct-lib
     $<$<PLATFORM_ID:Linux>:
         src/platform_unix.cpp>
 )
+target_compile_features(proj-struct-lib
+    PUBLIC
+        cxx_auto_type
+)
 
 add_executable(proj-struct
     src/main.cpp
